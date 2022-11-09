@@ -4,6 +4,11 @@ public class Radio implements IRadio {
 
     ArrayList<ArrayList<ICancion>> _playlists;
     ArrayList<Float> _emisoras;
+    private Bandas _banda;
+    private float _emisoraActual = 0;
+    private boolean _encendida = true;
+    private int _volumen = 0;
+    private ModosRadio _modo = ModosRadio.RADIO;
 
     protected Radio(ArrayList<ArrayList<ICancion>> playlists, ArrayList<Float> emisorasGuardadas) {
         // Hacer algo con las playlists y emisoras que "el usuario ya guardó"
@@ -12,63 +17,57 @@ public class Radio implements IRadio {
     }
 
     @Override
-    public void cambiarA_AM() {
-        // TODO Auto-generated method stub
-
+    public void cambiarBanda(Bandas nuevaBanda) {
+        _banda = nuevaBanda;
     }
 
     @Override
     public Bandas obtenerBanda() {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public void cambiarA_FM() {
-        // TODO Auto-generated method stub
-
+        return _banda;
     }
 
     @Override
     public void subirEmisora() {
-        // TODO Auto-generated method stub
-
+        _emisoraActual += DELTA_EMISORA;
     }
 
     @Override
     public void bajarEmisora() {
-        // TODO Auto-generated method stub
-
+        _emisoraActual -= DELTA_EMISORA;
+        _emisoraActual = Math.max(0, _emisoraActual);
     }
 
     @Override
     public float obtenerEmisoraActual() {
-        // TODO Auto-generated method stub
-        return 0;
+        return _emisoraActual;
     }
 
     @Override
     public ArrayList<Float> obtenerEmisorasGuardadas() {
-        // TODO Auto-generated method stub
-        return null;
+        return _emisoras;
     }
 
     @Override
     public int obtenerPosicionEmisora(float emisora) {
-        // TODO Auto-generated method stub
-        return 0;
+        return _emisoras.indexOf(emisora);
     }
 
     @Override
     public void guardarEmisoraActual() {
-        // TODO Auto-generated method stub
+        boolean hayEspacio = _emisoras.size() != MAX_EMISORAS_GUARDADAS;
+        boolean noSeRepite = _emisoras.indexOf(_emisoraActual) == -1;
 
+        if (hayEspacio && noSeRepite) {
+            _emisoras.add(_emisoraActual);
+        }
     }
 
     @Override
     public void cargarEmisora(int posicion) {
-        // TODO Auto-generated method stub
-
+        Float emisora = _emisoras.get(posicion);
+        if (emisora != null) {
+            _emisoraActual = emisora;
+        }
     }
 
     @Override
@@ -121,37 +120,37 @@ public class Radio implements IRadio {
 
     @Override
     public void encender() {
-        // TODO Auto-generated method stub
-
+        _encendida = true;
     }
 
     @Override
     public void apagar() {
-        // TODO Auto-generated method stub
-
+        _encendida = false;
     }
 
     @Override
     public void aumentarVolumen() {
-        // TODO Auto-generated method stub
-
+        _volumen += DELTA_VOLUMEN;
     }
 
     @Override
     public void disminuirVolumen() {
-        // TODO Auto-generated method stub
-
+        _volumen -= DELTA_VOLUMEN;
+        _volumen = Math.max(0, _volumen);
     }
 
     @Override
     public void cambiarModo(ModosRadio nuevoModo) {
-        // TODO Auto-generated method stub
-
+        _modo = nuevoModo;
     }
 
     @Override
     public ModosRadio obtenerModo() {
-        // TODO Auto-generated method stub
-        return null;
+        return _modo;
+    }
+
+    @Override
+    public boolean estaEncendida() {
+        return _encendida;
     }
 }

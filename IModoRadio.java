@@ -8,14 +8,11 @@ public interface IModoRadio {
     public final int MAX_EMISORAS_GUARDADAS = 50;
 
     /**
-     * Cambia la banda a AM.
+     * Cambia la banda de la radio (AM o FM).
+     * 
+     * @param nuevaBanda la nueva banda, (AM o FM).
      */
-    void cambiarA_AM();
-
-    /**
-     * Cambia la banda a FM.
-     */
-    void cambiarA_FM();
+    void cambiarBanda(Bandas nuevaBanda);
 
     /**
      * @return si se encuentra en FM o AM.

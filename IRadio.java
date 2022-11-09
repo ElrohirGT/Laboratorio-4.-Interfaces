@@ -15,6 +15,11 @@ public interface IRadio extends IModoRadio, IModoReproduccion, IModoTelefono, IM
     void apagar();
 
     /**
+     * @return verdadero si la radio está encendida, caso contrario falso.
+     */
+    boolean estaEncendida();
+
+    /**
      * Aumenta el volumen de la radio de acuerdo a DELTA_VOLUMEN.
      */
     void aumentarVolumen();
