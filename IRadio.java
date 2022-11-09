@@ -30,6 +30,11 @@ public interface IRadio extends IModoRadio, IModoReproduccion, IModoTelefono, IM
     void disminuirVolumen();
 
     /**
+     * @return el volumen actual de la radio.
+     */
+    int obtenerVolumen();
+
+    /**
      * Cambia el modo de la radio al modo dado.
      * 
      * @param nuevoModo El modo al que se quiere cambiar la radio.
