@@ -1,4 +1,6 @@
 import java.util.ArrayList;
+import java.util.Random;
+
 
 public class Radio implements IRadio {
 
@@ -14,10 +16,11 @@ public class Radio implements IRadio {
     //Iradio
     private ArrayList<ICancion> _playListSeleccionada = null;
     private ICancion _nombreCancion = null;
-    private int _posicionCancion = 0;
+    //private int _posicionCancion = 0;//Por ahora no se usa
 
     //Itelefono
-    
+    private boolean _coneccion = false;
+    private ITelefono _objTelefono = null;
     protected Radio(ArrayList<ArrayList<ICancion>> playlists, ArrayList<Float> emisorasGuardadas) {
         // Hacer algo con las playlists y emisoras que "el usuario ya guardó"
         if (playlists != null) {
@@ -107,7 +110,7 @@ public class Radio implements IRadio {
         int indiceAnterior = _playListSeleccionada.indexOf(_nombreCancion);
         int tamanioTotalPosiciones = _playListSeleccionada.size()-1;
         int indcide_siguinte = indiceAnterior;
-        _posicionCancion = indiceAnterior;
+        //_posicionCancion = indiceAnterior;
 
         if(indiceAnterior<tamanioTotalPosiciones){
             indcide_siguinte = indiceAnterior+1;
@@ -157,21 +160,32 @@ public class Radio implements IRadio {
 
     @Override
     public boolean conectarTelefono(ITelefono telefono) {
-        // TODO Auto-generated method stub
-        
-        return false;
+        _objTelefono = telefono;
+        Random rd = new Random(); // creating Random object
+        _coneccion = rd.nextBoolean();
+            
+        return true;
     }
+
+/*
+    public boolean conectarTelefono(ITelefono telefono) {
+        return true;
+    }
+ */
+
 
     @Override
     public void desconectarTelefono() {
         // TODO Auto-generated method stub
+
 
     }
 
     @Override
     public ArrayList<IContacto> obtenerContactos() {
         // TODO Auto-generated method stub
-        return null;
+
+        return _objTelefono;
     }
 
     @Override
