@@ -15,7 +15,7 @@ public interface IModoTelefono {
      *         Si no hay nada conectado retorna null.
      */
     ITelefono obtenerTelefonoConectado();
-
+    
     /**
      * Se desconecta del teléfono dado.
      */

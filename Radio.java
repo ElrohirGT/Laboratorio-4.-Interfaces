@@ -20,6 +20,10 @@ public class Radio implements IRadio {
     //Itelefono
     private boolean _coneccion = false;
     private ITelefono _objTelefono = null;
+   //IModo Productividad
+   private ArrayList<String> _ListaPronostico = new ArrayList<String>() {{ add("Nublado"); add("Soleado"); add("Lluvioso"); add("Nieve"); }};
+
+
     protected Radio(ArrayList<ArrayList<ICancion>> playlists, ArrayList<Float> emisorasGuardadas) {
         // Hacer algo con las playlists y emisoras que "el usuario ya guardó"
         if (playlists != null) {
@@ -171,17 +175,17 @@ public class Radio implements IRadio {
 
     @Override
     public void desconectarTelefono() {
-        // TODO Auto-generated method stub
-
+        _objTelefono = null;
+            
 
     }
 
     @Override
     public ArrayList<IContacto> obtenerContactos() {
-        // TODO Auto-generated method stub
 
-        return _objTelefono;
+        return _objTelefono.obtenerContactos();
     }
+//--------------------------------------------------------
 
     @Override
     public void encender() {
@@ -229,5 +233,15 @@ public class Radio implements IRadio {
     public ITelefono obtenerTelefonoConectado() {
         // TODO Auto-generated method stub
         return null;
+    }
+
+    @Override
+    public String obtenerPronóstico(){
+        //   private ArrayList<String> _ListaPronostico = new ArrayList<String>() {{ add("Nublado"); add("Soleado"); add("Lluvioso"); add("Nieve"); }};
+        Random r = new Random();
+        int valorDado = r.nextInt(4)+1;
+        String dato = _ListaPronostico.get(valorDado);
+
+        return dato;
     }
 }

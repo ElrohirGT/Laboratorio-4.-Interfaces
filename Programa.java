@@ -287,6 +287,9 @@ public class Programa {
                         };
 
                         menu.put("Conectar otro teléfono", r -> {
+                            IntStream.range(0, telefonos.size()).forEach(i->{
+                                printSpaceSeparated(i+1+")", telefonos.get(i).obtenerNombre(), ANSI_YELLOW);
+                            });
                             final int option = formLabel("Seleccione un teléfono", ANSI_CYAN, s -> {
                                 try {
                                     var n = Integer.parseInt(s);
