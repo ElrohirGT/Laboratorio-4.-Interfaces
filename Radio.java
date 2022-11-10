@@ -12,8 +12,7 @@ public class Radio implements IRadio {
     private int _volumen = 0;
     private ModosRadio _modo = ModosRadio.RADIO;
 
-
-    //Iradio
+    // Iradio
     private ArrayList<ICancion> _playListSeleccionada = null;
     private ICancion _nombreCancion = null;
     //private int _posicionCancion = 0;//Por ahora no se usa
@@ -86,11 +85,11 @@ public class Radio implements IRadio {
             _emisoraActual = emisora;
         }
     }
-    //--------Parte de IModo Reproduccion--------
-    
+    // --------Parte de IModo Reproduccion--------
+
     @Override
     public ArrayList<ArrayList<ICancion>> obtenerPlaylists() {
-        //Ya
+        // Ya
         return _playlists;
     }
 
@@ -99,55 +98,52 @@ public class Radio implements IRadio {
 
         _playListSeleccionada = _playlists.get(posicion);
         _nombreCancion = _playListSeleccionada.get(0);
-        //_nombreCancion = _playListSeleccionada.get(_posicionCancion);
-
+        // _nombreCancion = _playListSeleccionada.get(_posicionCancion);
 
     }
 
     @Override
     public void siguienteCancion() {
-        //ya
+        // ya
         int indiceAnterior = _playListSeleccionada.indexOf(_nombreCancion);
-        int tamanioTotalPosiciones = _playListSeleccionada.size()-1;
+        int tamanioTotalPosiciones = _playListSeleccionada.size() - 1;
         int indcide_siguinte = indiceAnterior;
         //_posicionCancion = indiceAnterior;
 
-        if(indiceAnterior<tamanioTotalPosiciones){
-            indcide_siguinte = indiceAnterior+1;
+        if (indiceAnterior < tamanioTotalPosiciones) {
+            indcide_siguinte = indiceAnterior + 1;
 
             _nombreCancion = _playListSeleccionada.get(indcide_siguinte);
         }
-        
-        if(indiceAnterior>=tamanioTotalPosiciones){
+
+        if (indiceAnterior >= tamanioTotalPosiciones) {
             indcide_siguinte = 0;
             _nombreCancion = _playListSeleccionada.get(indcide_siguinte);
         }
-        
-     
 
     }
 
     @Override
     public void cancionAnterior() {
-        //ya
+        // ya
         int indiceAnterior = _playListSeleccionada.indexOf(_nombreCancion);
-        int tamanioTotalPosiciones = _playListSeleccionada.size()-1;
+        int tamanioTotalPosiciones = _playListSeleccionada.size() - 1;
         int indcide_siguinte = indiceAnterior;
 
-        if(indiceAnterior>0){
-            indcide_siguinte = indiceAnterior-1;
+        if (indiceAnterior > 0) {
+            indcide_siguinte = indiceAnterior - 1;
 
             _nombreCancion = _playListSeleccionada.get(indcide_siguinte);
         }
-        
-        if(indiceAnterior==0){
+
+        if (indiceAnterior == 0) {
             indcide_siguinte = tamanioTotalPosiciones;
             _nombreCancion = _playListSeleccionada.get(indcide_siguinte);
         }
 
     }
 
-    //-----------------------------------------
+    // -----------------------------------------
     @Override
     public ICancion obtenerCancion() {
         // TODO Auto-generated method stub
@@ -155,8 +151,7 @@ public class Radio implements IRadio {
         return _nombreCancion;
     }
 
-
-    //--------Parte de IModo Telefono--------
+    // --------Parte de IModo Telefono--------
 
     @Override
     public boolean conectarTelefono(ITelefono telefono) {
@@ -228,5 +223,11 @@ public class Radio implements IRadio {
     @Override
     public int obtenerVolumen() {
         return _volumen;
+    }
+
+    @Override
+    public ITelefono obtenerTelefonoConectado() {
+        // TODO Auto-generated method stub
+        return null;
     }
 }

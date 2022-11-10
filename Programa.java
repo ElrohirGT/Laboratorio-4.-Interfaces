@@ -64,7 +64,51 @@ public class Programa {
         };
 
         // TODO add playlists and emisoras
-        IRadio radio = new Radio(null, null);
+        final ArrayList<ArrayList<ICancion>> playlists = new ArrayList<>() {
+            {
+                add(new ArrayList<>() {
+                    {
+                        add(new Cancion("The show must go on", Duration.ofMinutes(4).plusSeconds(31), "Rock", "Queen"));
+                        add(new Cancion("Nothing else matters", Duration.ofMinutes(6).plusSeconds(28), "Rock",
+                                "Metallica"));
+                        add(new Cancion("Thunderstruck", Duration.ofMinutes(4).plusSeconds(52), "Rcok", "AC/DC"));
+                        add(new Cancion("Losing my Religion", Duration.ofMinutes(4).plusSeconds(28), "Rock", "R.E.M."));
+                        add(new Cancion("I was made for lovin' you", Duration.ofMinutes(4).plusSeconds(31), "Rock",
+                                "KISS"));
+                        add(new Cancion("Zombie", Duration.ofMinutes(5).plusSeconds(6), "Rock", "The Cranberries"));
+                    }
+                });
+                add(new ArrayList<>() {
+                    {
+                        add(new Cancion("Paranoid", Duration.ofMinutes(2).plusSeconds(48), "Rock", "Black Sabbath"));
+                        add(new Cancion("Californication", Duration.ofMinutes(5).plusSeconds(29), "Rock",
+                                "Red Hot Chili Peppers"));
+                        add(new Cancion("La Cancion", Duration.ofMinutes(4).plusSeconds(10), "Reguetón", "Bad Bunny"));
+                        add(new Cancion("House, Life & Soul", Duration.ofMinutes(2).plusSeconds(44), "Electrónica",
+                                "D-Sides"));
+                        add(new Cancion("Dance Alone", Duration.ofMinutes(2).plusSeconds(5), "Electrónica", "Bsno"));
+                    }
+                });
+            }
+        };
+        final ArrayList<Float> emisoras = null;
+        final ArrayList<ITelefono> telefonos = new ArrayList<>() {
+            {
+                add(new Telefono("Redmi Note 8", "5524-2256", "Flavio Galán", new ArrayList<>() {
+                    {
+                        add(new Contacto("Brandon", "3357-0173"));
+                        add(new Contacto("Nicolle", "4517-6476"));
+                    }
+                }));
+                add(new Telefono("Samsung Galaxy", "9878-3245", "José Benito", new ArrayList<>() {
+                    {
+                        add(new Contacto("Valeria", "4544-9867"));
+                        add(new Contacto("José", "1232-3454"));
+                    }
+                }));
+            }
+        };
+        IRadio radio = new Radio(playlists, emisoras);
         animation("Cargando ", LOADING_FRAMES, 5000, 3, ANSI_YELLOW);
 
         while (true) {
@@ -226,17 +270,40 @@ public class Programa {
                         });
                         break;
                     case TELEFONO:
+                        radio.conectarTelefono(telefonos.get(0));
                         final var contactos = radio.obtenerContactos();
                         showHeader = r -> {
-                            IntStream.range(0, contactos.size()).forEach(i -> {
-                                printSpaceSeparated(i + 1 + ")",
-                                        String.format("%s: %s", contactos.get(i).obtenerNombre(),
-                                                contactos.get(i).obtenerNumero()),
-                                        ANSI_YELLOW);
-                            });
+                            if (r.obtenerTelefonoConectado() == null) {
+                                consoleWriteLine("Por favor conecte un teléfono antes!", ANSI_RED);
+                            } else {
+                                IntStream.range(0, contactos.size()).forEach(i -> {
+                                    printSpaceSeparated(i + 1 + ")",
+                                            String.format("%s: %s", contactos.get(i).obtenerNombre(),
+                                                    contactos.get(i).obtenerNumero()),
+                                            ANSI_YELLOW);
+                                });
+                            }
                             consoleWriteLine(SUB_DIVIDER);
                         };
 
+                        menu.put("Conectar otro teléfono", r -> {
+                            final int option = formLabel("Seleccione un teléfono", ANSI_CYAN, s -> {
+                                try {
+                                    var n = Integer.parseInt(s);
+                                    if (n < 1 || n > telefonos.size()) {
+                                        consoleWriteLine("La posición debe estar entre 1 y " + telefonos.size(),
+                                                ANSI_RED);
+                                        return false;
+                                    }
+                                    return true;
+                                } catch (Exception e) {
+                                    consoleWriteLine("Por favor ingrese un número válido!", ANSI_RED);
+                                    return false;
+                                }
+                            }, Integer::parseInt);
+
+                            r.conectarTelefono(telefonos.get(option));
+                        });
                         menu.put("Llamar contacto", r -> {
                             final int option = formLabel("Seleccione un contacto", ANSI_CYAN, s -> {
                                 try {

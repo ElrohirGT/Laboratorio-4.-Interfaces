@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+
 public class Telefono implements ITelefono {
     ArrayList<IContacto> _contactos;
 
@@ -6,42 +7,38 @@ public class Telefono implements ITelefono {
     private String _numeroTelefono;
     private String _duenioTelefono;
 
-
-    public Telefono(ArrayList<IContacto> _contactos, String _nombreTelefono, String _numeroTelefono, String _duenioTelefono) {
-        this._contactos = _contactos;
-        this._nombreTelefono = _nombreTelefono;
-        this._numeroTelefono = _numeroTelefono;
-        this._duenioTelefono = _duenioTelefono;
+    public Telefono(String nombreTelefono, String numeroTelefono,
+            String duenioTelefono, ArrayList<IContacto> contactos) {
+        _contactos = contactos;
+        _nombreTelefono = nombreTelefono;
+        _numeroTelefono = numeroTelefono;
+        _duenioTelefono = duenioTelefono;
     }
 
-    /** 
+    /**
      * @return String
      */
-    //Implements ITelefono
-    public String obtenerNombre(){
+    // Implements ITelefono
+    public String obtenerNombre() {
         return _nombreTelefono;
     }
-    
-    
-    /** 
+
+    /**
      * @return String
      */
-    public String obtenerNumero(){
+    public String obtenerNumero() {
         return _numeroTelefono;
     }
-    
-    
-    /** 
+
+    /**
      * @return String
      */
-    public String obtenerDueño(){
+    public String obtenerDueño() {
         return _duenioTelefono;
     }
 
-
-    public ArrayList<IContacto> obtenerContactos(){
+    public ArrayList<IContacto> obtenerContactos() {
         return _contactos;
     }
-
 
 }
