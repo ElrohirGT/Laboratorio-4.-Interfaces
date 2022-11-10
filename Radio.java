@@ -131,6 +131,7 @@ public class Radio implements IRadio {
     @Override
     public void aumentarVolumen() {
         _volumen += DELTA_VOLUMEN;
+        _volumen = Math.min(100, _volumen);
     }
 
     @Override
@@ -152,5 +153,10 @@ public class Radio implements IRadio {
     @Override
     public boolean estaEncendida() {
         return _encendida;
+    }
+
+    @Override
+    public int obtenerVolumen() {
+        return _volumen;
     }
 }
