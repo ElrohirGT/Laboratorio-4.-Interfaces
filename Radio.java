@@ -2,8 +2,8 @@ import java.util.ArrayList;
 
 public class Radio implements IRadio {
 
-    ArrayList<ArrayList<ICancion>> _playlists = new ArrayList<>();
-    ArrayList<Float> _emisoras = new ArrayList<>();
+    private ArrayList<ArrayList<ICancion>> _playlists = new ArrayList<>();
+    private ArrayList<Float> _emisoras = new ArrayList<>();
     private Bandas _banda = Bandas.AM;
     private float _emisoraActual = 0;
     private boolean _encendida = true;
