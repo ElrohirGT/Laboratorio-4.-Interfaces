@@ -303,7 +303,7 @@ public class Programa {
                                     consoleWriteLine("Por favor ingrese un número válido!", ANSI_RED);
                                     return false;
                                 }
-                            }, Integer::parseInt);
+                            }, Integer::parseInt) - 1;
 
                             r.conectarTelefono(telefonos.get(option));
                         });
