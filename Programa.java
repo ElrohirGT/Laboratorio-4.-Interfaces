@@ -270,25 +270,22 @@ public class Programa {
                         });
                         break;
                     case TELEFONO:
-                        radio.conectarTelefono(telefonos.get(0));
-                        final var contactos = radio.obtenerContactos();
                         showHeader = r -> {
                             if (r.obtenerTelefonoConectado() == null) {
                                 consoleWriteLine("Por favor conecte un teléfono antes!", ANSI_RED);
                             } else {
+                                final var contactos = r.obtenerContactos();
                                 IntStream.range(0, contactos.size()).forEach(i -> {
-                                    printSpaceSeparated(i + 1 + ")",
-                                            String.format("%s: %s", contactos.get(i).obtenerNombre(),
-                                                    contactos.get(i).obtenerNumero()),
-                                            ANSI_YELLOW);
+                                    printSpaceSeparated(contactos.get(i).obtenerNombre(),
+                                            contactos.get(i).obtenerNumero(), ANSI_YELLOW);
                                 });
                             }
                             consoleWriteLine(SUB_DIVIDER);
                         };
 
                         menu.put("Conectar otro teléfono", r -> {
-                            IntStream.range(0, telefonos.size()).forEach(i->{
-                                printSpaceSeparated(i+1+")", telefonos.get(i).obtenerNombre(), ANSI_YELLOW);
+                            IntStream.range(0, telefonos.size()).forEach(i -> {
+                                printSpaceSeparated(i + 1 + ")", telefonos.get(i).obtenerNombre(), ANSI_YELLOW);
                             });
                             final int option = formLabel("Seleccione un teléfono", ANSI_CYAN, s -> {
                                 try {
@@ -308,6 +305,12 @@ public class Programa {
                             r.conectarTelefono(telefonos.get(option));
                         });
                         menu.put("Llamar contacto", r -> {
+                            final var contactos = r.obtenerContactos();
+                            IntStream.range(0, contactos.size()).forEach(i -> {
+                                printSpaceSeparated(i + 1 + ")",
+                                        contactos.get(i).obtenerNombre() + " - " + contactos.get(i).obtenerNumero(),
+                                        ANSI_YELLOW);
+                            });
                             final int option = formLabel("Seleccione un contacto", ANSI_CYAN, s -> {
                                 try {
                                     var n = Integer.parseInt(s);
@@ -363,17 +366,14 @@ public class Programa {
                         });
                         break;
                     case PRODUCTIVIDAD:
-                        while (true) {
+                        showHeader = r -> {
                             final var pronosticoActual = radio.obtenerPronóstico();
                             consoleWriteLine("El pronóstico actual:", ANSI_WHITE, ANSI_PURPLE_BACKGROUND);
                             consoleWriteLine(pronosticoActual);
-
-                            final var answer = formLabel("Ingrese q para salir, enter para actualizar", ANSI_CYAN)
-                                    .toLowerCase();
-                            if (answer.equals("q")) {
-                                break;
-                            }
-                        }
+                        };
+                        menu.put("Actualizar", r -> {
+                            clearScreen();
+                        });
                         break;
                     default:
                         break;

@@ -165,9 +165,6 @@ public class Radio implements IRadio {
     @Override
     public boolean conectarTelefono(ITelefono telefono) {
         _objTelefono = telefono;
-        Random rd = new Random(); // creating Random object
-        _coneccion = rd.nextBoolean();
-
         return true;
     }
 
@@ -177,7 +174,7 @@ public class Radio implements IRadio {
 
     @Override
     public ITelefono obtenerTelefonoConectado() {
-        
+
         return _objTelefono;
     }
 
@@ -238,10 +235,8 @@ public class Radio implements IRadio {
 
     @Override
     public String obtenerPronóstico() {
-        // private ArrayList<String> _ListaPronostico = new ArrayList<String>() {{
-        // add("Nublado"); add("Soleado"); add("Lluvioso"); add("Nieve"); }};
         Random r = new Random();
-        int valorDado = r.nextInt(4) + 1;
+        int valorDado = r.nextInt(4);
         String dato = _ListaPronostico.get(valorDado);
 
         return dato;
