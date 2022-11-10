@@ -2,9 +2,9 @@ import java.util.ArrayList;
 
 public class Radio implements IRadio {
 
-    ArrayList<ArrayList<ICancion>> _playlists;
-    ArrayList<Float> _emisoras;
-    private Bandas _banda;
+    ArrayList<ArrayList<ICancion>> _playlists = new ArrayList<>();
+    ArrayList<Float> _emisoras = new ArrayList<>();
+    private Bandas _banda = Bandas.AM;
     private float _emisoraActual = 0;
     private boolean _encendida = true;
     private int _volumen = 0;
@@ -12,8 +12,14 @@ public class Radio implements IRadio {
 
     protected Radio(ArrayList<ArrayList<ICancion>> playlists, ArrayList<Float> emisorasGuardadas) {
         // Hacer algo con las playlists y emisoras que "el usuario ya guardó"
-        _playlists = playlists;
-        _emisoras = emisorasGuardadas;
+        if (playlists != null) {
+            _playlists = playlists;
+        }
+        ;
+
+        if (emisorasGuardadas != null) {
+            _emisoras = emisorasGuardadas;
+        }
     }
 
     @Override
