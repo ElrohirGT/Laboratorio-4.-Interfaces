@@ -2,14 +2,10 @@ import java.time.Duration;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Formattable;
 import java.util.LinkedHashMap;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.stream.IntStream;
-import java.util.stream.StreamSupport;
-
-import javax.swing.Icon;
 
 /**
  * Programa
