@@ -142,7 +142,7 @@ public class Radio implements IRadio {
             indcide_siguinte = tamanioTotalPosiciones;
             _nombreCancion = _playListSeleccionada.get(indcide_siguinte);
         }
-        
+
     }
 
     //-----------------------------------------
@@ -177,7 +177,7 @@ public class Radio implements IRadio {
     }
 
     @Override
-    public void apagar() {w
+    public void apagar() {
         _encendida = false;
     }
 
