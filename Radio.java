@@ -1,7 +1,6 @@
 import java.util.ArrayList;
 import java.util.Random;
 
-
 public class Radio implements IRadio {
 
     private ArrayList<ArrayList<ICancion>> _playlists = new ArrayList<>();
@@ -15,14 +14,20 @@ public class Radio implements IRadio {
     // Iradio
     private ArrayList<ICancion> _playListSeleccionada = null;
     private ICancion _nombreCancion = null;
-    //private int _posicionCancion = 0;//Por ahora no se usa
+    // private int _posicionCancion = 0;//Por ahora no se usa
 
-    //Itelefono
+    // Itelefono
     private boolean _coneccion = false;
     private ITelefono _objTelefono = null;
-   //IModo Productividad
-   private ArrayList<String> _ListaPronostico = new ArrayList<String>() {{ add("Nublado"); add("Soleado"); add("Lluvioso"); add("Nieve"); }};
-
+    // IModo Productividad
+    private ArrayList<String> _ListaPronostico = new ArrayList<String>() {
+        {
+            add("Nublado");
+            add("Soleado");
+            add("Lluvioso");
+            add("Nieve");
+        }
+    };
 
     protected Radio(ArrayList<ArrayList<ICancion>> playlists, ArrayList<Float> emisorasGuardadas) {
         // Hacer algo con las playlists y emisoras que "el usuario ya guardó"
@@ -112,7 +117,7 @@ public class Radio implements IRadio {
         int indiceAnterior = _playListSeleccionada.indexOf(_nombreCancion);
         int tamanioTotalPosiciones = _playListSeleccionada.size() - 1;
         int indcide_siguinte = indiceAnterior;
-        //_posicionCancion = indiceAnterior;
+        // _posicionCancion = indiceAnterior;
 
         if (indiceAnterior < tamanioTotalPosiciones) {
             indcide_siguinte = indiceAnterior + 1;
@@ -162,21 +167,23 @@ public class Radio implements IRadio {
         _objTelefono = telefono;
         Random rd = new Random(); // creating Random object
         _coneccion = rd.nextBoolean();
-            
+
         return true;
     }
 
-/*
-    public boolean conectarTelefono(ITelefono telefono) {
-        return true;
-    }
- */
+    // public boolean conectarTelefono(ITelefono telefono) {
+    // return true;
+    // }
 
+    @Override
+    public ITelefono obtenerTelefonoConectado() {
+        // TODO Auto-generated method stub
+        return null;
+    }
 
     @Override
     public void desconectarTelefono() {
         _objTelefono = null;
-            
 
     }
 
@@ -185,7 +192,7 @@ public class Radio implements IRadio {
 
         return _objTelefono.obtenerContactos();
     }
-//--------------------------------------------------------
+    // --------------------------------------------------------
 
     @Override
     public void encender() {
@@ -230,16 +237,11 @@ public class Radio implements IRadio {
     }
 
     @Override
-    public ITelefono obtenerTelefonoConectado() {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public String obtenerPronóstico(){
-        //   private ArrayList<String> _ListaPronostico = new ArrayList<String>() {{ add("Nublado"); add("Soleado"); add("Lluvioso"); add("Nieve"); }};
+    public String obtenerPronóstico() {
+        // private ArrayList<String> _ListaPronostico = new ArrayList<String>() {{
+        // add("Nublado"); add("Soleado"); add("Lluvioso"); add("Nieve"); }};
         Random r = new Random();
-        int valorDado = r.nextInt(4)+1;
+        int valorDado = r.nextInt(4) + 1;
         String dato = _ListaPronostico.get(valorDado);
 
         return dato;
