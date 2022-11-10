@@ -2,11 +2,14 @@ import java.time.Duration;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Formattable;
 import java.util.LinkedHashMap;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.stream.IntStream;
 import java.util.stream.StreamSupport;
+
+import javax.swing.Icon;
 
 /**
  * Programa
@@ -39,6 +42,14 @@ public class Programa {
     static final int DIVIDER_HALF_LENGTH = DIVIDER_LENGTH / 2;
     static final String DIVIDER = new String(new char[DIVIDER_LENGTH]).replace("\0", "=");
     static final String SUB_DIVIDER = new String(new char[DIVIDER_LENGTH]).replace("\0", "-");
+    static final ArrayList<Object> LOADING_FRAMES = new ArrayList<>() {
+        {
+            add("|");
+            add("/");
+            add("—");
+            add("\\");
+        }
+    };
 
     public static void main(String[] args) {
         String username = formLabel("Por favor ingrese su nombre", ANSI_CYAN);
@@ -58,14 +69,7 @@ public class Programa {
 
         // TODO add playlists and emisoras
         IRadio radio = new Radio(null, null);
-        animation("Cargando ", new ArrayList<>() {
-            {
-                add("|");
-                add("/");
-                add("—");
-                add("\\");
-            }
-        }, 5000, 3, ANSI_YELLOW);
+        animation("Cargando ", LOADING_FRAMES, 5000, 3, ANSI_YELLOW);
 
         while (true) {
             clearScreen();
@@ -79,26 +83,12 @@ public class Programa {
                 menu.put("Encender", r -> {
                     radio.encender();
                     clearScreen();
-                    animation("Cargando ", new ArrayList<>() {
-                        {
-                            add("|");
-                            add("/");
-                            add("—");
-                            add("\\");
-                        }
-                    }, 5000, 3, ANSI_YELLOW);
+                    animation("Cargando ", LOADING_FRAMES, 5000, 3, ANSI_YELLOW);
                 });
             } else {
                 menu.put("Apagar", r -> {
                     radio.apagar();
-                    animation("Apagando ", new ArrayList<>() {
-                        {
-                            add("|");
-                            add("/");
-                            add("—");
-                            add("\\");
-                        }
-                    }, 1000, 3, ANSI_YELLOW);
+                    animation("Apagando ", LOADING_FRAMES, 1000, 3, ANSI_YELLOW);
                 });
                 menu.put("Cambiar Modo", r -> {
                     var modes = Arrays.asList(ModosRadio.values());
@@ -240,14 +230,84 @@ public class Programa {
                         });
                         break;
                     case TELEFONO:
+                        final var contactos = radio.obtenerContactos();
                         showHeader = r -> {
-                            final var contactos = r.obtenerContactos();
                             IntStream.range(0, contactos.size()).forEach(i -> {
                                 printSpaceSeparated(i + 1 + ")",
-                                        contactos.get(i).obtenerNombre() + contactos.get(i).obtenerNumero(),
+                                        String.format("%s: %s", contactos.get(i).obtenerNombre(),
+                                                contactos.get(i).obtenerNumero()),
                                         ANSI_YELLOW);
                             });
+                            consoleWriteLine(SUB_DIVIDER);
                         };
+
+                        menu.put("Llamar contacto", r -> {
+                            final int option = formLabel("Seleccione un contacto", ANSI_CYAN, s -> {
+                                try {
+                                    var n = Integer.parseInt(s);
+                                    if (n < 1 || n > contactos.size()) {
+                                        consoleWriteLine("La posición debe estar entre 1 y " + contactos.size(),
+                                                ANSI_RED);
+                                        return false;
+                                    }
+                                    return true;
+                                } catch (Exception e) {
+                                    consoleWriteLine("Por favor ingrese un número válido!", ANSI_RED);
+                                    return false;
+                                }
+                            }, Integer::parseInt);
+
+                            final IContacto contactoActual = contactos.get(option);
+                            animation("Llamando ", LOADING_FRAMES, 1500, 4, ANSI_GREEN);
+
+                            while (true) {
+                                consoleWrite("Actualmente en llamada con ");
+                                consoleWrite(contactoActual.obtenerNombre(), ANSI_YELLOW);
+                                consoleWrite(" - ");
+                                consoleWriteLine(contactoActual.obtenerNumero(), ANSI_CYAN);
+
+                                printSpaceSeparated("1)", "Poner en espera...", ANSI_YELLOW);
+                                printSpaceSeparated("2)", "Colgar", ANSI_YELLOW);
+                                final int suboption = formLabel("Seleccione una opción", ANSI_CYAN, s -> {
+                                    try {
+                                        var n = Integer.parseInt(s);
+                                        if (n < 1 || n > 2) {
+                                            consoleWriteLine("La posición debe estar entre 1 y " + 2,
+                                                    ANSI_RED);
+                                            return false;
+                                        }
+                                        return true;
+                                    } catch (Exception e) {
+                                        consoleWriteLine("Por favor ingrese un número válido!", ANSI_RED);
+                                        return false;
+                                    }
+                                }, Integer::parseInt);
+
+                                if (suboption == 1) {
+                                    clearScreen();
+                                    consoleWriteLine("Llamada en espera, presione enter para retomarla...");
+                                    System.console().readLine();
+                                    animation("Retomando llamada ", LOADING_FRAMES, 1000, 4, ANSI_YELLOW);
+                                    clearScreen();
+                                } else {
+                                    consoleWriteLine("Llamada colgada");
+                                    break;
+                                }
+                            }
+                        });
+                        break;
+                    case PRODUCTIVIDAD:
+                        while (true) {
+                            final var pronosticoActual = radio.obtenerPronóstico();
+                            consoleWriteLine("El pronóstico actual:", ANSI_WHITE, ANSI_PURPLE_BACKGROUND);
+                            consoleWriteLine(pronosticoActual);
+
+                            final var answer = formLabel("Ingrese q para salir, enter para actualizar", ANSI_CYAN)
+                                    .toLowerCase();
+                            if (answer.equals("q")) {
+                                break;
+                            }
+                        }
                         break;
                     default:
                         break;
@@ -275,12 +335,11 @@ public class Programa {
                 }
             }, Integer::parseInt) - 1;
 
+            menu.get(labels[selected]).accept(radio);
+
             if (labels[selected].equals("Salir")) {
                 break;
             }
-
-            menu.get(labels[selected]).accept(radio);
-
             consoleWriteLine("Presione enter para continuar...");
             System.console().readLine();
         }
