@@ -7,6 +7,13 @@ public class Cancion implements ICancion{
 
 
 
+    public Cancion(String _nombreCancion, Duration _duracionCancion, String _generoCancion, String _autorCancion) {
+        this._nombreCancion = _nombreCancion;
+        this._duracionCancion = _duracionCancion;
+        this._generoCancion = _generoCancion;
+        this._autorCancion = _autorCancion;
+    }
+
     public String obtenerNombre(){
         return _nombreCancion;
     }
