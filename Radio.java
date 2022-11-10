@@ -10,6 +10,11 @@ public class Radio implements IRadio {
     private int _volumen = 0;
     private ModosRadio _modo = ModosRadio.RADIO;
 
+
+    //Iradio
+    private ArrayList<ICancion> _playListSeleccionada = null;
+    private ICancion _nombreCancion = null;
+    private int _posicionCancion = 0;
     protected Radio(ArrayList<ArrayList<ICancion>> playlists, ArrayList<Float> emisorasGuardadas) {
         // Hacer algo con las playlists y emisoras que "el usuario ya guardó"
         if (playlists != null) {
@@ -75,22 +80,47 @@ public class Radio implements IRadio {
             _emisoraActual = emisora;
         }
     }
-
+    //--------Parte de IModo Reproduccion--------
+    
     @Override
     public ArrayList<ArrayList<ICancion>> obtenerPlaylists() {
         // TODO Auto-generated method stub
-        return null;
+        //Ya
+        return _playlists;
     }
 
     @Override
     public void seleccionarPlaylist(int posicion) {
-        // TODO Auto-generated method stub
+
+        _playListSeleccionada = _playlists.get(posicion);
+        _nombreCancion = _playListSeleccionada.get(0);
+        //_nombreCancion = _playListSeleccionada.get(_posicionCancion);
+
 
     }
 
     @Override
     public void siguienteCancion() {
+
         // TODO Auto-generated method stub
+
+        int indiceAnterior = _playListSeleccionada.indexOf(_nombreCancion);
+        int tamanioTotalPosiciones = _playListSeleccionada.size()-1;
+        int indcide_siguinte = indiceAnterior;
+        _posicionCancion = indiceAnterior;
+
+        if(indiceAnterior<=tamanioTotalPosiciones){
+            indcide_siguinte = indiceAnterior+1;
+
+            _nombreCancion = _playListSeleccionada.get(indcide_siguinte);
+        }
+        
+        if(indiceAnterior>=tamanioTotalPosiciones){
+            indcide_siguinte = 0;
+            _nombreCancion = _playListSeleccionada.get(indcide_siguinte);
+        }
+        
+     
 
     }
 
@@ -98,12 +128,29 @@ public class Radio implements IRadio {
     public void cancionAnterior() {
         // TODO Auto-generated method stub
 
+        int indiceAnterior = _playListSeleccionada.indexOf(_nombreCancion);
+        int tamanioTotalPosiciones = _playListSeleccionada.size()-1;
+        int indcide_siguinte = indiceAnterior;
+
+        if(indiceAnterior>0){
+            indcide_siguinte = indiceAnterior-1;
+
+            _nombreCancion = _playListSeleccionada.get(indcide_siguinte);
+        }
+        
+        if(indiceAnterior==0){
+            indcide_siguinte = tamanioTotalPosiciones;
+            _nombreCancion = _playListSeleccionada.get(indcide_siguinte);
+        }
+        
     }
 
+    //-----------------------------------------
     @Override
     public ICancion obtenerCancion() {
         // TODO Auto-generated method stub
-        return null;
+
+        return _nombreCancion;
     }
 
     @Override
@@ -130,7 +177,7 @@ public class Radio implements IRadio {
     }
 
     @Override
-    public void apagar() {
+    public void apagar() {w
         _encendida = false;
     }
 
