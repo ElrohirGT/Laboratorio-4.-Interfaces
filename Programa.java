@@ -91,7 +91,23 @@ public class Programa {
                 });
             }
         };
-        ArrayList<Float> emisoras = null;
+        final ArrayList<Float> emisoras = null;
+        final ArrayList<ITelefono> telefonos = new ArrayList<>() {
+            {
+                add(new Telefono("Redmi Note 8", "5524-2256", "Flavio Galán", new ArrayList<>() {
+                    {
+                        add(new Contacto("Brandon", "3357-0173"));
+                        add(new Contacto("Nicolle", "4517-6476"));
+                    }
+                }));
+                add(new Telefono("Samsung Galaxy", "9878-3245", "José Benito", new ArrayList<>() {
+                    {
+                        add(new Contacto("Valeria", "4544-9867"));
+                        add(new Contacto("José", "1232-3454"));
+                    }
+                }));
+            }
+        };
         IRadio radio = new Radio(playlists, emisoras);
         animation("Cargando ", LOADING_FRAMES, 5000, 3, ANSI_YELLOW);
 
@@ -254,17 +270,40 @@ public class Programa {
                         });
                         break;
                     case TELEFONO:
+                        radio.conectarTelefono(telefonos.get(0));
                         final var contactos = radio.obtenerContactos();
                         showHeader = r -> {
-                            IntStream.range(0, contactos.size()).forEach(i -> {
-                                printSpaceSeparated(i + 1 + ")",
-                                        String.format("%s: %s", contactos.get(i).obtenerNombre(),
-                                                contactos.get(i).obtenerNumero()),
-                                        ANSI_YELLOW);
-                            });
+                            if (r.obtenerTelefonoConectado() == null) {
+                                consoleWriteLine("Por favor conecte un teléfono antes!", ANSI_RED);
+                            } else {
+                                IntStream.range(0, contactos.size()).forEach(i -> {
+                                    printSpaceSeparated(i + 1 + ")",
+                                            String.format("%s: %s", contactos.get(i).obtenerNombre(),
+                                                    contactos.get(i).obtenerNumero()),
+                                            ANSI_YELLOW);
+                                });
+                            }
                             consoleWriteLine(SUB_DIVIDER);
                         };
 
+                        menu.put("Conectar otro teléfono", r -> {
+                            final int option = formLabel("Seleccione un teléfono", ANSI_CYAN, s -> {
+                                try {
+                                    var n = Integer.parseInt(s);
+                                    if (n < 1 || n > telefonos.size()) {
+                                        consoleWriteLine("La posición debe estar entre 1 y " + telefonos.size(),
+                                                ANSI_RED);
+                                        return false;
+                                    }
+                                    return true;
+                                } catch (Exception e) {
+                                    consoleWriteLine("Por favor ingrese un número válido!", ANSI_RED);
+                                    return false;
+                                }
+                            }, Integer::parseInt);
+
+                            r.conectarTelefono(telefonos.get(option));
+                        });
                         menu.put("Llamar contacto", r -> {
                             final int option = formLabel("Seleccione un contacto", ANSI_CYAN, s -> {
                                 try {
