@@ -15,6 +15,9 @@ public class Radio implements IRadio {
     private ArrayList<ICancion> _playListSeleccionada = null;
     private ICancion _nombreCancion = null;
     private int _posicionCancion = 0;
+
+    //Itelefono
+    
     protected Radio(ArrayList<ArrayList<ICancion>> playlists, ArrayList<Float> emisorasGuardadas) {
         // Hacer algo con las playlists y emisoras que "el usuario ya guardó"
         if (playlists != null) {
@@ -84,7 +87,6 @@ public class Radio implements IRadio {
     
     @Override
     public ArrayList<ArrayList<ICancion>> obtenerPlaylists() {
-        // TODO Auto-generated method stub
         //Ya
         return _playlists;
     }
@@ -101,15 +103,13 @@ public class Radio implements IRadio {
 
     @Override
     public void siguienteCancion() {
-
-        // TODO Auto-generated method stub
-
+        //ya
         int indiceAnterior = _playListSeleccionada.indexOf(_nombreCancion);
         int tamanioTotalPosiciones = _playListSeleccionada.size()-1;
         int indcide_siguinte = indiceAnterior;
         _posicionCancion = indiceAnterior;
 
-        if(indiceAnterior<=tamanioTotalPosiciones){
+        if(indiceAnterior<tamanioTotalPosiciones){
             indcide_siguinte = indiceAnterior+1;
 
             _nombreCancion = _playListSeleccionada.get(indcide_siguinte);
@@ -126,8 +126,7 @@ public class Radio implements IRadio {
 
     @Override
     public void cancionAnterior() {
-        // TODO Auto-generated method stub
-
+        //ya
         int indiceAnterior = _playListSeleccionada.indexOf(_nombreCancion);
         int tamanioTotalPosiciones = _playListSeleccionada.size()-1;
         int indcide_siguinte = indiceAnterior;
@@ -153,9 +152,13 @@ public class Radio implements IRadio {
         return _nombreCancion;
     }
 
+
+    //--------Parte de IModo Telefono--------
+
     @Override
     public boolean conectarTelefono(ITelefono telefono) {
         // TODO Auto-generated method stub
+        
         return false;
     }
 
