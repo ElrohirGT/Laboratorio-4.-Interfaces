@@ -177,8 +177,8 @@ public class Radio implements IRadio {
 
     @Override
     public ITelefono obtenerTelefonoConectado() {
-        // TODO Auto-generated method stub
-        return null;
+        
+        return _objTelefono;
     }
 
     @Override
