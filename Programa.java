@@ -1,3 +1,7 @@
+// Creado por
+// - Flavio André Galán Donis 22386
+// - Brandon Javier Reyes Morales 22992
+
 import java.time.Duration;
 import java.time.LocalTime;
 import java.util.ArrayList;
