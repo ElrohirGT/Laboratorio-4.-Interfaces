@@ -304,6 +304,9 @@ public class Programa {
 
                             r.conectarTelefono(telefonos.get(option));
                         });
+                        if (radio.obtenerTelefonoConectado() == null) {
+                            break; // Skips Llamar contacto
+                        }
                         menu.put("Llamar contacto", r -> {
                             final var contactos = r.obtenerContactos();
                             IntStream.range(0, contactos.size()).forEach(i -> {
@@ -324,7 +327,7 @@ public class Programa {
                                     consoleWriteLine("Por favor ingrese un número válido!", ANSI_RED);
                                     return false;
                                 }
-                            }, Integer::parseInt);
+                            }, Integer::parseInt) - 1;
 
                             final IContacto contactoActual = contactos.get(option);
                             animation("Llamando ", LOADING_FRAMES, 1500, 4, ANSI_GREEN);
