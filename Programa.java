@@ -66,8 +66,6 @@ public class Programa {
                     absSeconds % 60);
             return seconds < 0 ? "-" + positive : positive;
         };
-
-        // TODO add playlists and emisoras
         final ArrayList<ArrayList<ICancion>> playlists = new ArrayList<>() {
             {
                 add(new ArrayList<>() {
